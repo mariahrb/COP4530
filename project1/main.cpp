@@ -38,8 +38,9 @@ void packingMenu(PackingService &packing) {
                 getline(cin, category);
                 cout << "Enter weight: ";
                 cin >> weight;
-                cin.ignore();
+                cin.ignore(); // ADD THIS LINE - flush newline after cin >> weight
                 packing.addItem(name, category, weight);
+                cout << "Item added successfully!\n";
                 break;
             case 2:
                 cout << "Enter item name to remove: ";
@@ -95,6 +96,7 @@ void tripMenu(TripHistoryService &trips) {
                 cin >> total;
                 cin.ignore();
                 trips.addTrip(dest, start, end, total);
+                cout << "Trip added successfully!\n";
                 break;
             case 2:
                 trips.removeLastTrip();

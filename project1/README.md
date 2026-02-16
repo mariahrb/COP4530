@@ -153,19 +153,19 @@ GroupNumber/
 
 ### Compile all code:
 ```bash
-g++ -o travel_system main.cpp services/*.cpp structures/*.cpp
+g++ -o travel_system main.cpp domain/*.cpp services/*.cpp
 ```
 
 Run the program:
+```bash
 ./travel_system
+```
 
 Navigate the menus:
-
 Main Menu → Packing, Trips, Outfit Rotation
-
 Submenus allow adding, removing, rotating, and displaying items
 
-Example Console Interaction
+### Example Console Interaction
 
 Main Menu
 
