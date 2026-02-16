@@ -7,18 +7,22 @@
 #ifndef PACKINGSERVICE_H
 #define PACKINGSERVICE_H
 
-#include "../structures/SinglyLinkedList.h"
+#include <string>
 #include "../domain/PackingItem.h"
+#include "../structures/SinglyLinkedList.h"
+
+using namespace std;
 
 class PackingService {
 private:
     SinglyLinkedList<PackingItem> packingList;
 
 public:
-    void addItem(string name, string category, double weight);
-    void removeItem(string name);
-    void markItemPacked(string name);
+    void addItem(const string& name, const string& category, double weight);
+    void removeItem(const string& name);
+    void markItemPacked(const string& name);
     void displayPackingList() const;
+    int getItemCount() const;
     int getTotalItems() const;
     void clearPackingList();
 };

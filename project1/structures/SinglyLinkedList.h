@@ -1,41 +1,21 @@
 // Implements a generic singly linked list using templates.
 // Used for managing the active packing list.
 
+#ifndef SINGLYLINKEDLIST_H
+#define SINGLYLINKEDLIST_H
+
 #include <iostream>
+#include "Node.h"
 using namespace std;
-
-template <typename T>
-struct Node {
-    T data;
-    Node<T>* next;
-    Node<T>* prev; // not used in singly, but kept for compatibility
-
-    Node() {
-        next = nullptr;
-        prev = nullptr;
-    }
-
-    Node(T value) {
-        data = value;
-        next = nullptr;
-        prev = nullptr;
-    }
-};
 
 template <typename T>
 class SinglyLinkedList {
 private:
     Node<T>* head;
-    int count;
 
 public:
-    // Constructor
-    SinglyLinkedList() {
-        head = nullptr;
-        count = 0;
-    }
+    SinglyLinkedList() : head(nullptr) {}
 
-    // Insert at end
     void insertAtEnd(T value) {
         Node<T>* newNode = new Node<T>(value);
 
@@ -48,14 +28,10 @@ public:
             }
             temp->next = newNode;
         }
-
-        count++;
     }
 
-    // Display list
-    void display() {
+    void display() const {
         Node<T>* temp = head;
-
         while (temp != nullptr) {
             cout << temp->data << " -> ";
             temp = temp->next;
@@ -63,66 +39,56 @@ public:
         cout << "NULL" << endl;
     }
 
-    // Return size
-    int size() {
+    int size() const {
+        int count = 0;
+        Node<T>* temp = head;
+        while (temp != nullptr) {
+            count++;
+            temp = temp->next;
+        }
         return count;
     }
 
-    // Remove by value
-    void removeByValue(T value) {
+    void removeByName(string name) {
         if (head == nullptr) return;
 
-        // If head needs to be removed
-        if (head->data == value) {
+        if (head->data.getName() == name) {
             Node<T>* temp = head;
             head = head->next;
             delete temp;
-            count--;
             return;
         }
 
         Node<T>* current = head;
-
-        while (current->next != nullptr) {
-            if (current->next->data == value) {
-                Node<T>* temp = current->next;
-                current->next = temp->next;
-                delete temp;
-                count--;
-                return;
-            }
+        while (current->next != nullptr && current->next->data.getName() != name) {
             current = current->next;
         }
+
+        if (current->next != nullptr) {
+            Node<T>* temp = current->next;
+            current->next = current->next->next;
+            delete temp;
+        }       
     }
 
-    // Remove last node
-    void removeLast() {
-        if (head == nullptr) return;
-
-        if (head->next == nullptr) {
-            delete head;
-            head = nullptr;
-            count--;
-            return;
-        }
-
+    void markItem(string name) {
         Node<T>* temp = head;
-        while (temp->next->next != nullptr) {
+        while (temp != nullptr) {
+            if (temp->data.getName() == name) {
+                temp->data.setPacked(true);
+                return;
+            }
             temp = temp->next;
         }
-
-        delete temp->next;
-        temp->next = nullptr;
-        count--;
     }
 
-    // Clear entire list
     void clear() {
         while (head != nullptr) {
             Node<T>* temp = head;
             head = head->next;
             delete temp;
         }
-        count = 0;
     }
 };
+
+#endif

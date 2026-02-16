@@ -2,75 +2,95 @@
 // Tail connects back to head to allow continuous rotation.
 // Used for outfit rotation scheduling.
 
+#ifndef CIRCULARLINKEDLIST_H
+#define CIRCULARLINKEDLIST_H
+
 #include <iostream>
+#include "Node.h"
 using namespace std;
-
-template <typename T>
-struct Node {
-    T data;
-    Node<T>* next;
-    Node<T>* prev; // optional, not used here but kept consistent
-
-    Node() {
-        next = nullptr;
-        prev = nullptr;
-    }
-
-    Node(T value) {
-        data = value;
-        next = nullptr;
-        prev = nullptr;
-    }
-};
 
 template <typename T>
 class CircularLinkedList {
 private:
     Node<T>* head;
-    Node<T>* tail;
-    Node<T>* current; // useful for rotation features
     int count;
 
 public:
-    // Constructor
-    CircularLinkedList() {
-        head = nullptr;
-        tail = nullptr;
-        current = nullptr;
-        count = 0;
+    CircularLinkedList() : head(nullptr), count(0) {}
+
+    ~CircularLinkedList() {
+        while (!isEmpty()) {
+            removeCurrent();
+        }
     }
 
-    // Insert at end
-    void insertAtEnd(T value) {
+    void insert(T value) {
         Node<T>* newNode = new Node<T>(value);
-
+        
         if (head == nullptr) {
-            head = tail = newNode;
-            newNode->next = head;
+            head = newNode;
+            head->next = head;
         } else {
-            tail->next = newNode;
+            Node<T>* temp = head;
+            while (temp->next != head) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
             newNode->next = head;
-            tail = newNode;
         }
-
         count++;
     }
 
-    // Display (one full loop)
-    void display() {
+    void removeCurrent() {
         if (head == nullptr) return;
+        
+        if (head->next == head) { // only one node
+            delete head;
+            head = nullptr;
+        } else {
+            Node<T>* temp = head;
+            while (temp->next != head) { // find last node
+                temp = temp->next;
+            }
+            Node<T>* toDelete = head;
+            head = head->next; // move head forward
+            temp->next = head; // update last node
+            delete toDelete;
+        }
+        count--;
+    }
 
+    T getCurrent() const {
+        if (isEmpty()) {
+            throw runtime_error("List is empty");
+        }
+        return head->data;
+    }
+
+    void moveToNext() {
+        if (head != nullptr) {
+            head = head->next;
+        }
+    }
+
+    void displayAll() const {
+        if (head == nullptr) return;
+        
         Node<T>* temp = head;
-
         do {
             cout << temp->data << " -> ";
             temp = temp->next;
         } while (temp != head);
-
-        cout << "(back to head)" << endl;
+        cout << "(back to start)" << endl;
     }
 
-        // Move current pointer (rotation)
-    void moveT:
+    bool isEmpty() const {
+        return count == 0;
+    }
 
+    int size() const {
+        return count;
+    }
 };
+
+#endif

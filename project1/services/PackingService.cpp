@@ -1,28 +1,23 @@
 #include "PackingService.h"
 
-// Add new packing item
-void PackingService::addItem(string name,
-                             string category,
-                             double weight) {
-    PackingItem item(name, category, weight);
-    packingList.insertAtEnd(item);
+void PackingService::addItem(const string& name, const string& category, double weight) {
+    packingList.insertAtEnd(PackingItem(name, category, weight));
 }
 
-// Remove item by name
-void PackingService::removeItem(string name) {
-    packingList.removeByValue(name); 
-    // NOTE: Student A must support remove by matching name
+void PackingService::removeItem(const string& name) {
+    packingList.removeByName(name);
 }
 
-// Mark item as packed
-void PackingService::markItemPacked(string name) {
+void PackingService::markItemPacked(const string& name) {
     packingList.markItem(name);
-    // Requires Student A helper or traversal
 }
 
-// Display packing list
 void PackingService::displayPackingList() const {
     packingList.display();
+}
+
+int PackingService::getItemCount() const {
+    return packingList.size();
 }
 
 int PackingService::getTotalItems() const {

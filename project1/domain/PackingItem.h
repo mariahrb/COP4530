@@ -6,30 +6,30 @@
 #ifndef PACKINGITEM_H
 #define PACKINGITEM_H
 
+#include <iostream>
 #include <string>
 using namespace std;
 
 class PackingItem {
 private:
-    string itemName;
+    string name;
     string category;
     double weight;
-    bool isPacked;
+    bool packed;
 
 public:
-    // Constructors
-    PackingItem();
-    PackingItem(string name, string category, double weight);
+    PackingItem(string n = "", string c = "", double w = 0.0)
+        : name(n), category(c), weight(w), packed(false) {}
 
-    // Getters
-    string getItemName() const;
-    string getCategory() const;
-    double getWeight() const;
-    bool getIsPacked() const;
+    string getName() const { return name; }
+    void setPacked(bool p) { packed = p; }
+    bool isPacked() const { return packed; }
 
-    // Behavior
-    void markAsPacked();
-    void display() const;
+    friend ostream& operator<<(ostream& os, const PackingItem& item) {
+        os << item.name << " (" << item.category << ") - " << item.weight << "kg";
+        if (item.packed) os << " [PACKED]";
+        return os;
+    }
 };
 
 #endif

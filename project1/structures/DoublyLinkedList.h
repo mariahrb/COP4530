@@ -5,6 +5,13 @@
 #include <iostream>
 using namespace std;
 
+#ifndef DOUBLYLINKEDLIST_H
+#define DOUBLYLINKEDLIST_H
+
+#include <iostream>
+#include "Node.h"
+using namespace std;
+
 template <typename T>
 class DoublyLinkedList {
 private:
@@ -13,14 +20,8 @@ private:
     int count;
 
 public:
-    // Constructor
-    DoublyLinkedList() {
-        head = nullptr;
-        tail = nullptr;
-        count = 0;
-    }
+    DoublyLinkedList() : head(nullptr), tail(nullptr), count(0) {}
 
-    // Insert at end
     void insertAtEnd(T value) {
         Node<T>* newNode = new Node<T>(value);
 
@@ -31,14 +32,11 @@ public:
             newNode->prev = tail;
             tail = newNode;
         }
-
         count++;
     }
 
-    // Display forward
-    void displayForward() {
+    void displayForward() const {
         Node<T>* temp = head;
-
         while (temp != nullptr) {
             cout << temp->data << " <-> ";
             temp = temp->next;
@@ -46,10 +44,8 @@ public:
         cout << "NULL" << endl;
     }
 
-    // Display backward
-    void displayBackward() {
+    void displayBackward() const {
         Node<T>* temp = tail;
-
         while (temp != nullptr) {
             cout << temp->data << " <-> ";
             temp = temp->prev;
@@ -57,7 +53,6 @@ public:
         cout << "NULL" << endl;
     }
 
-    // Remove last node
     void removeLast() {
         if (tail == nullptr) return;
 
@@ -74,17 +69,14 @@ public:
         count--;
     }
 
-    // Check if empty
     bool isEmpty() const {
         return count == 0;
     }
 
-    // Get size
     int size() const {
         return count;
     }
 
-    // Clear entire list
     void clear() {
         while (head != nullptr) {
             Node<T>* temp = head;
@@ -95,3 +87,5 @@ public:
         count = 0;
     }
 };
+
+#endif

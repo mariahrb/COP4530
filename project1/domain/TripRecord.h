@@ -6,6 +6,7 @@
 #ifndef TRIPRECORD_H
 #define TRIPRECORD_H
 
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -14,21 +15,31 @@ private:
     string destination;
     string startDate;
     string endDate;
-    int totalItemsPacked;
+    int itemsPacked;
 
 public:
-    // Constructors
-    TripRecord();
-    TripRecord(string destination, string startDate, string endDate, int totalItemsPacked);
+    TripRecord(string dest = "", string start = "", string end = "", int items = 0)
+        : destination(dest), startDate(start), endDate(end), itemsPacked(items) {}
 
     // Getters
-    string getDestination() const;
-    string getStartDate() const;
-    string getEndDate() const;
-    int getTotalItemsPacked() const;
+    string getDestination() const { return destination; }
+    string getStartDate() const { return startDate; }
+    string getEndDate() const { return endDate; }
+    int getItemsPacked() const { return itemsPacked; }
 
-    // Display
-    void display() const;
+    // Setters
+    void setDestination(const string& dest) { destination = dest; }
+    void setStartDate(const string& start) { startDate = start; }
+    void setEndDate(const string& end) { endDate = end; }
+    void setItemsPacked(int items) { itemsPacked = items; }
+    void incrementItemsPacked(int n = 1) { itemsPacked += n; }
+
+    // Output
+    friend ostream& operator<<(ostream& os, const TripRecord& trip) {
+        os << trip.destination << " (" << trip.startDate << " to " << trip.endDate 
+           << ") - " << trip.itemsPacked << " items";
+        return os;
+    }
 };
 
 #endif
