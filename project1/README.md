@@ -22,8 +22,6 @@ Our trip includes multiple destinations and varying weather conditions. We desig
 ## Clean Architecture
 The system follows a layered design to separate concerns and ensure maintainability:
 
-
-
 ### Domain Layer (Entities)
 * `PackingItem`: Represents a physical item (name).
 * `TripRecord`: Represents a destination.

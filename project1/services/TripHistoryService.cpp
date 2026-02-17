@@ -3,7 +3,7 @@
 using namespace std;
 
 void TripHistoryService::addTrip(string destination) {
-    TripRecord trip(destination);        // Only destination
+    TripRecord trip(destination);   
     tripHistory.insertAtEnd(trip);
     cout << "Trip added.\n";
 }
