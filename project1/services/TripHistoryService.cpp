@@ -1,15 +1,11 @@
 #include "TripHistoryService.h"
+#include <iostream>
+using namespace std;
 
-void TripHistoryService::addTrip(string destination,
-                                 string startDate,
-                                 string endDate,
-                                 int totalItemsPacked) {
-    TripRecord trip(destination, startDate, endDate, totalItemsPacked);
+void TripHistoryService::addTrip(string destination) {
+    TripRecord trip(destination);        // Only destination
     tripHistory.insertAtEnd(trip);
-}
-
-void TripHistoryService::removeLastTrip() {
-    tripHistory.removeLast();
+    cout << "Trip added.\n";
 }
 
 void TripHistoryService::displayTripsForward() const {
@@ -18,8 +14,4 @@ void TripHistoryService::displayTripsForward() const {
 
 void TripHistoryService::displayTripsBackward() const {
     tripHistory.displayBackward();
-}
-
-bool TripHistoryService::isEmpty() const {
-    return tripHistory.isEmpty();
 }

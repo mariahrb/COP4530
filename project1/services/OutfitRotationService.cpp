@@ -1,28 +1,18 @@
 #include "OutfitRotationService.h"
+#include <iostream>
+using namespace std;
 
-void OutfitRotationService::addOutfit(string name,
-                                      string occasion,
-                                      string weatherType) {
-    Outfit outfit(name, occasion, weatherType);
+void OutfitRotationService::addOutfit(string name) {
+    Outfit outfit(name);       // Only name now
     outfitRotation.insert(outfit);
-}
-
-void OutfitRotationService::removeCurrentOutfit() {
-    outfitRotation.removeCurrent();
+    cout << "Outfit added.\n";
 }
 
 void OutfitRotationService::nextOutfit() {
-    outfitRotation.moveToNext();
+    outfitRotation.moveNext(); // Move the current pointer
+    cout << "Moved to next outfit.\n";
 }
 
 void OutfitRotationService::showCurrentOutfit() const {
-    outfitRotation.getCurrent().display();
-}
-
-void OutfitRotationService::displayAllOutfits() const {
-    outfitRotation.displayAll();
-}
-
-bool OutfitRotationService::isEmpty() const {
-    return outfitRotation.isEmpty();
+    outfitRotation.displayCurrent(); // Print current outfit
 }

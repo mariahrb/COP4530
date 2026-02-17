@@ -1,29 +1,17 @@
 #include "PackingService.h"
+#include <iostream>
+using namespace std;
 
-void PackingService::addItem(const string& name, const string& category, double weight) {
-    packingList.insertAtEnd(PackingItem(name, category, weight));
+void PackingService::addItem(const string& name) {
+    packingList.insertAtEnd(PackingItem(name));
+    cout << "Item added.\n";
 }
 
 void PackingService::removeItem(const string& name) {
     packingList.removeByName(name);
-}
-
-void PackingService::markItemPacked(const string& name) {
-    packingList.markItem(name);
+    cout << "Item removed (or not found).\n";
 }
 
 void PackingService::displayPackingList() const {
     packingList.display();
-}
-
-int PackingService::getItemCount() const {
-    return packingList.size();
-}
-
-int PackingService::getTotalItems() const {
-    return packingList.size();
-}
-
-void PackingService::clearPackingList() {
-    packingList.clear();
 }

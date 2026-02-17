@@ -10,7 +10,6 @@
 #include <string>
 #include "../domain/PackingItem.h"
 #include "../structures/SinglyLinkedList.h"
-
 using namespace std;
 
 class PackingService {
@@ -18,13 +17,9 @@ private:
     SinglyLinkedList<PackingItem> packingList;
 
 public:
-    void addItem(const string& name, const string& category, double weight);
+    void addItem(const string& name);
     void removeItem(const string& name);
-    void markItemPacked(const string& name);
     void displayPackingList() const;
-    int getItemCount() const;
-    int getTotalItems() const;
-    void clearPackingList();
 };
 
 #endif

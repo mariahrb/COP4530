@@ -16,41 +16,32 @@ private:
 public:
     SinglyLinkedList() : head(nullptr) {}
 
+    // Insert at end
     void insertAtEnd(T value) {
         Node<T>* newNode = new Node<T>(value);
-
-        if (head == nullptr) {
+        if (!head) {
             head = newNode;
         } else {
             Node<T>* temp = head;
-            while (temp->next != nullptr) {
+            while (temp->next)
                 temp = temp->next;
-            }
             temp->next = newNode;
         }
     }
 
+    // Display all nodes
     void display() const {
         Node<T>* temp = head;
-        while (temp != nullptr) {
+        while (temp) {
             cout << temp->data << " -> ";
             temp = temp->next;
         }
         cout << "NULL" << endl;
     }
 
-    int size() const {
-        int count = 0;
-        Node<T>* temp = head;
-        while (temp != nullptr) {
-            count++;
-            temp = temp->next;
-        }
-        return count;
-    }
-
+    // Remove node by name (used by PackingService)
     void removeByName(string name) {
-        if (head == nullptr) return;
+        if (!head) return;
 
         if (head->data.getName() == name) {
             Node<T>* temp = head;
@@ -60,32 +51,13 @@ public:
         }
 
         Node<T>* current = head;
-        while (current->next != nullptr && current->next->data.getName() != name) {
+        while (current->next && current->next->data.getName() != name) {
             current = current->next;
         }
 
-        if (current->next != nullptr) {
+        if (current->next) {
             Node<T>* temp = current->next;
             current->next = current->next->next;
-            delete temp;
-        }       
-    }
-
-    void markItem(string name) {
-        Node<T>* temp = head;
-        while (temp != nullptr) {
-            if (temp->data.getName() == name) {
-                temp->data.setPacked(true);
-                return;
-            }
-            temp = temp->next;
-        }
-    }
-
-    void clear() {
-        while (head != nullptr) {
-            Node<T>* temp = head;
-            head = head->next;
             delete temp;
         }
     }

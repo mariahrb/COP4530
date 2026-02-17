@@ -13,83 +13,47 @@ template <typename T>
 class CircularLinkedList {
 private:
     Node<T>* head;
-    int count;
+    Node<T>* current; // track current node for rotation
 
 public:
-    CircularLinkedList() : head(nullptr), count(0) {}
+    CircularLinkedList() : head(nullptr), current(nullptr) {}
 
     ~CircularLinkedList() {
-        while (!isEmpty()) {
-            removeCurrent();
+        if (!head) return;
+        Node<T>* temp = head->next;
+        while (temp != head) {
+            Node<T>* nextNode = temp->next;
+            delete temp;
+            temp = nextNode;
         }
+        delete head;
     }
 
     void insert(T value) {
         Node<T>* newNode = new Node<T>(value);
-        
-        if (head == nullptr) {
+        if (!head) {
             head = newNode;
-            head->next = head;
+            newNode->next = head;
+            current = head;
         } else {
             Node<T>* temp = head;
-            while (temp->next != head) {
+            while (temp->next != head)
                 temp = temp->next;
-            }
             temp->next = newNode;
             newNode->next = head;
         }
-        count++;
     }
 
-    void removeCurrent() {
-        if (head == nullptr) return;
-        
-        if (head->next == head) { // only one node
-            delete head;
-            head = nullptr;
-        } else {
-            Node<T>* temp = head;
-            while (temp->next != head) { // find last node
-                temp = temp->next;
-            }
-            Node<T>* toDelete = head;
-            head = head->next; // move head forward
-            temp->next = head; // update last node
-            delete toDelete;
-        }
-        count--;
+    void moveNext() {
+        if (current)
+            current = current->next;
     }
 
-    T getCurrent() const {
-        if (isEmpty()) {
-            throw runtime_error("List is empty");
-        }
-        return head->data;
-    }
-
-    void moveToNext() {
-        if (head != nullptr) {
-            head = head->next;
-        }
-    }
-
-    void displayAll() const {
-        if (head == nullptr) return;
-        
-        Node<T>* temp = head;
-        do {
-            cout << temp->data << " -> ";
-            temp = temp->next;
-        } while (temp != head);
-        cout << "(back to start)" << endl;
-    }
-
-    bool isEmpty() const {
-        return count == 0;
-    }
-
-    int size() const {
-        return count;
+    void displayCurrent() const {
+        if (current)
+            cout << current->data << endl;
+        else
+            cout << "List is empty.\n";
     }
 };
 
