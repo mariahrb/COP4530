@@ -90,8 +90,8 @@ Wraps each linked list and provides meaningful operations:
 
 ### Automated Tests
 
-- `tests/values_tests.cpp` → ensures functions produce expected results  
-- `tests/errors_tests.cpp` → ensures graceful handling of invalid operations  
+- `tests/values_tests.cpp` -> ensures functions produce expected results  
+- `tests/errors_tests.cpp` -> ensures graceful handling of invalid operations  
 
 ---
 
