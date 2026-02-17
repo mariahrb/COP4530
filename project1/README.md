@@ -1,4 +1,4 @@
-# Travel Packing Rotation System ✈️❄️
+# Travel Packing Rotation System 
 
 ## Project Overview
 The **Travel Packing Rotation System** is inspired by a spring break trip to Lapland, Finland. Organizing packing items, tracking multiple destinations, and rotating outfits efficiently can become confusing; this system provides a structured digital solution.
