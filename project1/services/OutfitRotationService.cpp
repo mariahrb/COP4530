@@ -3,7 +3,7 @@
 using namespace std;
 
 void OutfitRotationService::addOutfit(string name) {
-    Outfit outfit(name);       // Only name now
+    Outfit outfit(name);
     outfitRotation.insert(outfit);
     cout << "Outfit added.\n";
 }

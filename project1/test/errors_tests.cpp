@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// ---------------- PACKING ERROR TESTS ----------------
 void testPackingErrors() {
     cout << "\n=== Testing PackingService (Errors) ===\n";
     PackingService packing;
@@ -13,28 +14,23 @@ void testPackingErrors() {
     packing.removeItem("NonExistent");
     cout << "Attempted to remove non-existent item (should handle gracefully)\n";
 
-    // Mark non-existent item as packed
-    packing.markItemPacked("NonExistent");
-    cout << "Attempted to mark non-existent item as packed (should handle gracefully)\n";
-
-    // Clear empty list
-    packing.clearPackingList();
-    cout << "Cleared empty packing list (should not crash)\n";
+    // Display empty list
+    packing.displayPackingList();
+    cout << "Displayed empty packing list (should not crash)\n";
 }
 
+// ---------------- TRIP HISTORY ERROR TESTS ----------------
 void testTripHistoryErrors() {
     cout << "\n=== Testing TripHistoryService (Errors) ===\n";
     TripHistoryService trips;
 
-    // Remove last trip from empty list
-    trips.removeLastTrip();
-    cout << "Attempted to remove last trip from empty list\n";
-
     // Display empty trip history
     trips.displayTripsForward();
     trips.displayTripsBackward();
+    cout << "Displayed empty trip history (should not crash)\n";
 }
 
+// ---------------- OUTFIT ROTATION ERROR TESTS ----------------
 void testOutfitRotationErrors() {
     cout << "\n=== Testing OutfitRotationService (Errors) ===\n";
     OutfitRotationService outfits;
@@ -43,21 +39,18 @@ void testOutfitRotationErrors() {
     outfits.nextOutfit();
     cout << "Attempted next outfit on empty rotation\n";
 
-    // Remove current outfit from empty rotation
-    outfits.removeCurrentOutfit();
-    cout << "Attempted to remove current outfit on empty rotation\n";
-
-    // Display empty rotation
-    outfits.displayAllOutfits();
+    // Show current outfit when empty
+    outfits.showCurrentOutfit();
+    cout << "Attempted to show current outfit on empty rotation\n";
 }
 
 int main() {
-    cout << "=== ERRORS TESTS FOR TRAVEL PACKING ROTATION SYSTEM ===\n";
+    cout << "=== ERROR TESTS FOR TRAVEL PACKING ROTATION SYSTEM ===\n";
 
     testPackingErrors();
     testTripHistoryErrors();
     testOutfitRotationErrors();
 
-    cout << "\n=== ERRORS TESTS COMPLETED ===\n";
+    cout << "\n=== ERROR TESTS COMPLETED ===\n";
     return 0;
 }

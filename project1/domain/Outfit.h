@@ -15,12 +15,15 @@ private:
     string name;
 
 public:
+    // Constructor with default parameter
     Outfit(string n = "") : name(n) {}
 
+    // Function to get the outfit name (for display purposes)
     string getName() const {
         return name;
     }
 
+    // Make it printable for display in CircularLinkedList
     friend ostream& operator<<(ostream& os, const Outfit& outfit) {
         os << outfit.name;
         return os;
