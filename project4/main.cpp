@@ -42,15 +42,16 @@ int main() {
 
             vector<string> path = g.findPath(v, u);
 
-            for (int i = 0; i < path.size(); i++) {
+            for (size_t i = 0; i < path.size(); i++) { {
                 cout << path[i];
                 if (i != path.size() - 1) {
                     cout << " to ";
                 }
             }
             cout << endl;
+            }
         }
-
+        
         else if (choice == 3) {
             string v, u, label;
             cout << "Enter v, u, and label: ";
