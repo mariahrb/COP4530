@@ -9,8 +9,19 @@ using namespace std;
 Graph::Graph() {
 }
 
+Graph::Graph(string filename) {
+    buildFromFile(filename);
+}
+
 bool Graph::hasVertex(string name) const {
     return adjList.find(name) != adjList.end();
+}
+
+bool Graph::hasEdge(string a, string b) const {
+    for (const Edge& e: edgesList) {
+        if (e.connects(a, b)) return true;
+    }
+    return false;
 }
 
 void Graph::insertVertex(string name) {
@@ -20,45 +31,33 @@ void Graph::insertVertex(string name) {
     }
 }
 
-bool Graph::hasEdge(string a, string b) const {
-    for (int i = 0; i < edgesList.size(); i++) {
-        if (edgesList[i].connects(a, b)) {
-            return true;
-        }
-    }
-    return false;
-}
-
 void Graph::insertEdge(string v, string w, string label) {
     if (!hasVertex(v) || !hasVertex(w)) { // if vertex doesn't exist
         cout << "Error: one or both vertices do not exist" << endl;
+        return;
     }
-    else if (hasEdge(v, w)) { // if edge exists
+
+    if (hasEdge(v, w)) { // if edge exists
         cout << "Edge already exists" << endl;
+        return;
     }
-    else {
-        edgesList.push_back(Edge(v, w, label)); // create edge
-        adjList[v].push_back(w); // add it to the list
-        adjList[w].push_back(v);
-    }
+
+    edgesList.push_back(Edge(v, w, label)); // create edge
+    adjList[v].push_back(w); // add it to the list
+    adjList[w].push_back(v);
 }
 
 Edge* Graph::findEdge(string a, string b) {
-    for (int i = 0; i < edgesList.size(); i++) { //checks list
-        if (edgesList[i].connects(a, b)) {
-            return &edgesList[i];
-        }
+    for (Edge& e : edgesList) {
+        if (e.connects(a, b)) return &e;
     }
     return nullptr;
 }
 
 const Edge* Graph::findEdge(string a, string b) const {
-    for (int i = 0; i < edgesList.size(); i++) {
-        if (edgesList[i].connects(a, b)) {
-            return &edgesList[i];
-        }
+    for (const Edge& e : edgesList) {
+        if (e.connects(a, b)) return &e;
     }
-
     return nullptr;
 }
 
@@ -78,10 +77,9 @@ void Graph::printIncidentEdges(string v) const {
         return;
     }
 
-    for (int i = 0; i < adjList.at(v).size(); i++) {
-        string neighbor = adjList.at(v)[i];
-
+    for (const string& neighbor : adjList.at(v)) {
         const Edge* e = findEdge(v, neighbor);
+
         if (e != nullptr) {
             cout << v << " to " << neighbor << " is " << e->getLabel() << endl;
         }
@@ -95,16 +93,10 @@ void Graph::eraseEdge(string v, string w) {
     }
 
     // remove w from v's neighbor list
-    adjList[v].erase(
-        remove(adjList[v].begin(), adjList[v].end(), w),
-        adjList[v].end()
-    );
+    adjList[v].erase(remove(adjList[v].begin(), adjList[v].end(), w), adjList[v].end());
 
     // remove v from w's neighbor list
-    adjList[w].erase(
-        remove(adjList[w].begin(), adjList[w].end(), v),
-        adjList[w].end()
-    );
+    adjList[w].erase(remove(adjList[w].begin(), adjList[w].end(), v), adjList[w].end());
 
     // remove edge object from edgesList
     for (int i = 0; i < edgesList.size(); i++) {
@@ -123,8 +115,8 @@ void Graph::eraseVertex(string v) {
 
     vector<string> neighbors = adjList[v];
 
-    for (int i = 0; i < neighbors.size(); i++) {
-        eraseEdge(v, neighbors[i]);
+    for (const string& neighbor : neighbors) {
+        eraseEdge(v, neighbor);
     }
 
     adjList.erase(v);
@@ -139,16 +131,54 @@ void Graph::eraseVertex(string v) {
     cout << "Vertex removed" << endl;
 }
 
-void Graph::printGraph() const {
-    for (auto pair : adjList) {
-        cout << pair.first << ": ";
+vector<string> Graph::findPath(string start, string end) {
+    vector<string> path;
 
-        for (int i = 0; i < pair.second.size(); i++) {
-            cout << pair.second[i] << " ";
-        }
-
-        cout << endl;
+    if (!hasVertex(start) || !hasVertex(end)) {
+        cout << "Error: one or both vertices do not exist" << endl;
+        return path;
     }
+
+    map<string, bool> visited;
+    map<string, string> parent;
+    queue<string> q;
+
+    visited[start] = true;
+    q.push(start);
+
+    while (!q.empty()) {
+        string current = q.front();
+        q.pop();
+
+        if (current == end) break;
+
+        for (const string& neighbor : adjList[current]) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = true;
+                parent[neighbor] = current;
+                q.push(neighbor);
+            }
+        }
+    }
+
+    if (!visited[end]) {
+        cout << "No path found" << endl;
+        return path;
+    }
+
+    for (string current = end; current != start; current = parent[current]) {
+        path.push_back(current);
+    }
+
+    path.push_back(start);
+    reverse(path.begin(), path.end());
+
+    if (path.size() < 3) {
+        cout << "Path must contain at least 3 vertices" << endl;
+        path.clear();
+    }
+
+    return path;
 }
 
 void Graph::buildFromFile(string filename) {
@@ -173,7 +203,6 @@ void Graph::buildFromFile(string filename) {
     // read edges
     while (getline(file, line)) {
         string v1, v2, label;
-
         stringstream edgeStream(line);
 
         getline(edgeStream, v1, '\t');
@@ -186,59 +215,14 @@ void Graph::buildFromFile(string filename) {
     file.close();
 }
 
-vector<string> Graph::findPath(string start, string end) {
-    vector<string> path;
+void Graph::printGraph() const {
+    for (const auto& pair : adjList) {
+        cout << pair.first << ": ";
 
-    if (!hasVertex(start) || !hasVertex(end)) {
-        cout << "Error: one or both vertices do not exist" << endl;
-        return path;
-    }
-
-    map<string, bool> visited;
-    map<string, string> parent;
-    queue<string> q;
-
-    visited[start] = true;
-    q.push(start);
-
-    while (!q.empty()) {
-        string current = q.front();
-        q.pop();
-
-        if (current == end) {
-            break;
+        for (const string& neighbor : pair.second) {
+            cout << neighbor << " ";
         }
 
-        for (int i = 0; i < adjList[current].size(); i++) {
-            string neighbor = adjList[current][i];
-
-            if (!visited[neighbor]) {
-                visited[neighbor] = true;
-                parent[neighbor] = current;
-                q.push(neighbor);
-            }
-        }
+        cout << endl;
     }
-
-    if (visited.find(end) == visited.end() || !visited[end]) {
-        cout << "No path found" << endl;
-        return path;
-    }
-
-    string current = end;
-
-    while (current != start) {
-        path.push_back(current);
-        current = parent[current];
-    }
-
-    path.push_back(start);
-    reverse(path.begin(), path.end());
-
-    if (path.size() < 3) {
-        cout << "Path must contain at least 3 vertices" << endl;
-        path.clear();
-    }
-
-    return path;
 }

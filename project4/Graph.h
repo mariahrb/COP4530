@@ -14,7 +14,7 @@ private:
     vector<Vertex> verticesList;
     vector<Edge> edgesList;
     map<string, vector<string>> adjList;
-    
+
     void buildFromFile(string filename);
 
 public:
