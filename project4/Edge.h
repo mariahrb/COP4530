@@ -16,7 +16,7 @@ public:
 
     string getV1() const;
     string getV2() const;
-    string getLable() const;
+    string getLabel() const;
 
     string operator*() const; //returns main stored value
 
