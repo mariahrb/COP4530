@@ -18,8 +18,10 @@ bool Graph::hasVertex(string name) const {
 }
 
 bool Graph::hasEdge(string a, string b) const {
-    for (const Edge& e: edgesList) {
-        if (e.connects(a, b)) return true;
+    for (std::size_t i = 0; i < edgesList.size(); i++) {
+        if (edgesList[i].connects(a, b)) {
+            return true;
+        }
     }
     return false;
 }
@@ -48,15 +50,19 @@ void Graph::insertEdge(string v, string w, string label) {
 }
 
 Edge* Graph::findEdge(string a, string b) {
-    for (Edge& e : edgesList) {
-        if (e.connects(a, b)) return &e;
+    for (std::size_t i = 0; i < edgesList.size(); i++) {
+        if (edgesList[i].connects(a, b)) {
+            return &edgesList[i];
+        }
     }
     return nullptr;
 }
 
 const Edge* Graph::findEdge(string a, string b) const {
-    for (const Edge& e : edgesList) {
-        if (e.connects(a, b)) return &e;
+    for (std::size_t i = 0; i < edgesList.size(); i++) {
+        if (edgesList[i].connects(a, b)) {
+            return &edgesList[i];
+        }
     }
     return nullptr;
 }
@@ -77,9 +83,10 @@ void Graph::printIncidentEdges(string v) const {
         return;
     }
 
-    for (const string& neighbor : adjList.at(v)) {
-        const Edge* e = findEdge(v, neighbor);
+    for (std::size_t i = 0; i < adjList.at(v).size(); i++) {
+        string neighbor = adjList.at(v)[i];
 
+        const Edge* e = findEdge(v, neighbor);
         if (e != nullptr) {
             cout << v << " to " << neighbor << " is " << e->getLabel() << endl;
         }
@@ -93,13 +100,19 @@ void Graph::eraseEdge(string v, string w) {
     }
 
     // remove w from v's neighbor list
-    adjList[v].erase(remove(adjList[v].begin(), adjList[v].end(), w), adjList[v].end());
+    adjList[v].erase(
+        remove(adjList[v].begin(), adjList[v].end(), w),
+        adjList[v].end()
+    );
 
     // remove v from w's neighbor list
-    adjList[w].erase(remove(adjList[w].begin(), adjList[w].end(), v), adjList[w].end());
+    adjList[w].erase(
+        remove(adjList[w].begin(), adjList[w].end(), v),
+        adjList[w].end()
+    );
 
     // remove edge object from edgesList
-    for (int i = 0; i < edgesList.size(); i++) {
+    for (std::size_t i = 0; i < edgesList.size(); i++) {
         if (edgesList[i].connects(v, w)) {
             edgesList.erase(edgesList.begin() + i);
             break;
@@ -115,13 +128,13 @@ void Graph::eraseVertex(string v) {
 
     vector<string> neighbors = adjList[v];
 
-    for (const string& neighbor : neighbors) {
-        eraseEdge(v, neighbor);
+    for (std::size_t i = 0; i < neighbors.size(); i++) {
+        eraseEdge(v, neighbors[i]);
     }
 
     adjList.erase(v);
 
-    for (int i = 0; i < verticesList.size(); i++) {
+    for (std::size_t i = 0; i < verticesList.size(); i++) {
         if (verticesList[i].getName() == v) {
             verticesList.erase(verticesList.begin() + i);
             break;
@@ -150,9 +163,13 @@ vector<string> Graph::findPath(string start, string end) {
         string current = q.front();
         q.pop();
 
-        if (current == end) break;
+        if (current == end) {
+            break;
+        }
 
-        for (const string& neighbor : adjList[current]) {
+        for (std::size_t i = 0; i < adjList[current].size(); i++) {
+            string neighbor = adjList[current][i];
+
             if (!visited[neighbor]) {
                 visited[neighbor] = true;
                 parent[neighbor] = current;
@@ -166,8 +183,11 @@ vector<string> Graph::findPath(string start, string end) {
         return path;
     }
 
-    for (string current = end; current != start; current = parent[current]) {
+    string current = end;
+
+    while (current != start) {
         path.push_back(current);
+        current = parent[current];
     }
 
     path.push_back(start);
@@ -216,11 +236,11 @@ void Graph::buildFromFile(string filename) {
 }
 
 void Graph::printGraph() const {
-    for (const auto& pair : adjList) {
-        cout << pair.first << ": ";
+    for (auto it = adjList.begin(); it != adjList.end(); it++) {
+        cout << it->first << ": ";
 
-        for (const string& neighbor : pair.second) {
-            cout << neighbor << " ";
+        for (std::size_t i = 0; i < it->second.size(); i++) {
+            cout << it->second[i] << " ";
         }
 
         cout << endl;
