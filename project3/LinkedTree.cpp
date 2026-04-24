@@ -6,11 +6,10 @@
 #include <cctype>
 #include <cstdlib>
 
-// Separator line used in the output file sections
 static const std::string SEPARATOR = "-------------------";
 
 
-// Constructor / Destructor
+// constructor / destructor
 
 LinkedTree::LinkedTree() : root(nullptr) {}
 
@@ -18,7 +17,7 @@ LinkedTree::~LinkedTree() {
     destroyTree(root);
 }
 
-// Recursively deletes every node in the subtree rooted at node
+// recursively deletes every node in the subtree rooted at node
 void LinkedTree::destroyTree(TreeNode* node) {
     if (!node) return;
     for (TreeNode* child : node->children)
@@ -27,11 +26,11 @@ void LinkedTree::destroyTree(TreeNode* node) {
 }
 
 
-// File parsing helper (free function)
+// file parsing helper (free function)
 
 
-// Splits a raw file line into its four logical fields.
-// Tries tab-separated format first (as specified), then falls back to
+// splits a raw file line into its four logical fields.
+// tries tab-separated format first (as specified), then falls back to
 // space-separated so the program works with either delimiter.
 static void parseLine(const std::string& line,
                       int& level, int& pos,
@@ -66,9 +65,9 @@ static void parseLine(const std::string& line,
         return;
     }
 
-    // Space-separated fallback 
-    // Format: level pos [edgeWord] content...
-    // Edge label is a single word (e.g., "Yes", "No", "Sometimes").
+    // space-separated fallback 
+    // format: level pos [edgeWord] content...
+    // edge label is a single word 
     std::istringstream iss(line);
     std::vector<std::string> words;
     std::string w;
@@ -100,9 +99,9 @@ static void parseLine(const std::string& line,
 // Tree construction
 
 
-// Reads the input file, creates TreeNode objects, sorts them by preorder
+// reads the input file, creates TreeNode objects, sorts them by preorder
 // position, and links them into the parent-child hierarchy using a
-// "last node seen at each level" map -- a classic preorder reconstruction.
+// "last node seen at each level" map 
 void LinkedTree::loadFromFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -132,7 +131,7 @@ void LinkedTree::loadFromFile(const std::string& filename) {
         return;
     }
 
-    // Sort by preorder position so we can reconstruct parent links in one pass
+    // sort by preorder position so we can reconstruct parent links in one pass
     std::sort(nodeList.begin(), nodeList.end(),
               [](TreeNode* a, TreeNode* b) {
                   return a->preorderPos < b->preorderPos;
@@ -141,7 +140,7 @@ void LinkedTree::loadFromFile(const std::string& filename) {
     root = nodeList[0];
 
     // lastAtLevel[n] = most recently visited node at depth n.
-    // When a node at level L is processed, its parent is lastAtLevel[L-1].
+    // when a node at level L is processed, its parent is lastAtLevel[L-1].
     std::map<int, TreeNode*> lastAtLevel;
     lastAtLevel[root->level] = root;
 
@@ -160,10 +159,10 @@ void LinkedTree::loadFromFile(const std::string& filename) {
 }
 
 
-// Preorder traversal: prints each node with level*2 leading dashes and edge label
+// preorder traversal: prints each node with level*2 leading dashes and edge label
 void LinkedTree::printVisualization(TreeNode* node, std::ostream& out) {
     if (node->level == 0) {
-        // Root has no incoming edge
+        // root has no incoming edge
         out << node->content << "\n";
     } else {
         std::string dashes(node->level * 2, '-');
@@ -173,7 +172,7 @@ void LinkedTree::printVisualization(TreeNode* node, std::ostream& out) {
         printVisualization(child, out);
 }
 
-// Adds every internal (non-leaf) node to result in preorder
+// adds every internal (non-leaf) node to result in preorder
 void LinkedTree::collectInternalNodes(TreeNode* node, std::vector<TreeNode*>& result) {
     if (!node->children.empty()) {
         result.push_back(node);
@@ -182,7 +181,7 @@ void LinkedTree::collectInternalNodes(TreeNode* node, std::vector<TreeNode*>& re
     }
 }
 
-// Adds every external (leaf) node to result in preorder
+// adds every external (leaf) node to result in preorder
 void LinkedTree::collectExternalNodes(TreeNode* node, std::vector<TreeNode*>& result) {
     if (node->children.empty()) {
         result.push_back(node);
@@ -192,7 +191,7 @@ void LinkedTree::collectExternalNodes(TreeNode* node, std::vector<TreeNode*>& re
     }
 }
 
-// Returns the number of edges on the longest path from node down to a leaf
+// returns the number of edges on the longest path from node down to a leaf
 int LinkedTree::computeHeight(TreeNode* node) {
     if (node->children.empty()) return 0;
     int maxH = 0;
@@ -203,7 +202,7 @@ int LinkedTree::computeHeight(TreeNode* node) {
 
 
 
-// Returns true if no node in the subtree has more than 2 children
+// returns true if no node in the subtree has more than 2 children
 bool LinkedTree::checkBinaryTree(TreeNode* node) {
     if (node->children.size() > 2) return false;
     for (TreeNode* child : node->children)
@@ -211,7 +210,7 @@ bool LinkedTree::checkBinaryTree(TreeNode* node) {
     return true;
 }
 
-// Returns true if every internal node has exactly 2 children
+// returns true if every internal node has exactly 2 children
 bool LinkedTree::checkProperBinaryTree(TreeNode* node) {
     if (!node->children.empty() && node->children.size() != 2) return false;
     for (TreeNode* child : node->children)
@@ -219,7 +218,7 @@ bool LinkedTree::checkProperBinaryTree(TreeNode* node) {
     return true;
 }
 
-// Returns true if all leaves reside at depth == treeHeight
+// returns true if all leaves reside at depth == treeHeight
 bool LinkedTree::checkPerfectBinaryTree(TreeNode* node, int treeHeight, int currentLevel) {
     if (node->children.empty())
         return currentLevel == treeHeight;
@@ -229,7 +228,7 @@ bool LinkedTree::checkPerfectBinaryTree(TreeNode* node, int treeHeight, int curr
     return true;
 }
 
-// Returns the subtree height when height-balanced (|leftH - rightH| <= 1 everywhere),
+// returns the subtree height when height-balanced (|leftH - rightH| <= 1 everywhere),
 // or -1 if any node violates the balance condition.
 int LinkedTree::computeBalancedHeight(TreeNode* node) {
     if (node->children.empty()) return 0;
@@ -245,7 +244,7 @@ int LinkedTree::computeBalancedHeight(TreeNode* node) {
 }
 
 
-// Output file generation
+// output file generation
 
 
 void LinkedTree::generateOutputFile(const std::string& outputFilename) {
@@ -312,9 +311,9 @@ void LinkedTree::generateOutputFile(const std::string& outputFilename) {
 }
 
 
-// Lets the user type a preorder position to inspect a node's content,
+// lets the user type a preorder position to inspect a node's content,
 // ancestor (parent), descendant (first child), and sibling.
-// Loops until the user types "exit".
+// loops until the user types "exit".
 void LinkedTree::interactiveExplore() {
     std::string input;
 
@@ -322,13 +321,13 @@ void LinkedTree::interactiveExplore() {
         std::cout << "\nWhich node would you like to explore (enter position or \"exit\"):\n";
         std::cin >> input;
 
-        // Exit condition 
+        // exit condition 
         if (input == "exit") {
             std::cout << "Goodbye!\n";
             break;
         }
 
-        // Validate: must be a non-empty string of digit characters
+        // validate: must be a non-empty string of digit characters
         bool allDigits = !input.empty();
         for (char c : input)
             if (!std::isdigit(static_cast<unsigned char>(c))) { allDigits = false; break; }
@@ -347,22 +346,22 @@ void LinkedTree::interactiveExplore() {
 
         TreeNode* node = nodesByPosition[pos];
 
-        // Node content
+        // node content
         std::cout << "Node's content: " << node->content << "\n";
 
-        // One ancestor (direct parent) 
+        // one ancestor (direct parent) 
         if (node->parent)
             std::cout << "Ancestor: " << node->parent->content << "\n";
         else
             std::cout << "Ancestor: None (root node)\n";
 
-        // One descendant (first child)
+        // one descendant (first child)
         if (!node->children.empty())
             std::cout << "Descendant: " << node->children[0]->content << "\n";
         else
             std::cout << "Descendant: None (leaf node)\n";
 
-        // One sibling (first other child of the same parent) 
+        // one sibling (first other child of the same parent) 
         std::string sibling = "None";
         if (node->parent)
             for (TreeNode* s : node->parent->children)

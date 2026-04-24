@@ -45,8 +45,16 @@ void Graph::insertEdge(string v, string w, string label) {
     }
 
     edgesList.push_back(Edge(v, w, label)); // create edge
-    adjList[v].push_back(w); // add it to the list
+    adjList[v].push_back(w);
     adjList[w].push_back(v);
+
+    // keep Vertex neighbor lists in sync
+    for (size_t i = 0; i < verticesList.size(); i++) {
+        if (verticesList[i].getName() == v) verticesList[i].addNeighbor(w);
+        else if (verticesList[i].getName() == w) verticesList[i].addNeighbor(v);
+    }
+
+    cout << "Edge inserted" << endl;
 }
 
 Edge* Graph::findEdge(string a, string b) {
@@ -88,7 +96,7 @@ void Graph::printIncidentEdges(string v) const {
 
         const Edge* e = findEdge(v, neighbor);
         if (e != nullptr) {
-            cout << v << " to " << neighbor << " is " << e->getLabel() << endl;
+            cout << v << " to " << neighbor << " is " << e->getLabel() << " mi" << endl;
         }
     }
 }
@@ -117,6 +125,12 @@ void Graph::eraseEdge(string v, string w) {
             edgesList.erase(edgesList.begin() + i);
             break;
         }
+    }
+
+    // keep Vertex neighbor lists in sync
+    for (std::size_t i = 0; i < verticesList.size(); i++) {
+        if (verticesList[i].getName() == v) verticesList[i].removeNeighbor(w);
+        else if (verticesList[i].getName() == w) verticesList[i].removeNeighbor(v);
     }
 }
 

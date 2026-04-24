@@ -2,7 +2,7 @@
 #include <string>
 #include "LinkedTree.h"
 
-// Entry point: prompts for an input file, builds the decision tree,
+// entry point: prompts for an input file, builds the decision tree,
 // writes about_tree.txt, then runs the interactive exploration console.
 int main() {
     std::string filename;

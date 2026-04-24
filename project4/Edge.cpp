@@ -63,6 +63,11 @@ bool Edge::connects(string a, string b) const {
     return false;
 }
 
+//endVertices
+pair<string, string> Edge::endVertices() const {
+    return {v1, v2};
+}
+
 //isAdjacentTo
 bool Edge::isAdjacentTo(const Edge& e) const {
     if (isIncidentOn(e.getV1()) || isIncidentOn(e.getV2())) {
