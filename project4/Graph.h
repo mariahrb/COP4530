@@ -7,36 +7,34 @@
 #include "Vertex.h"
 #include "Edge.h"
 
-using namespace std;
-
 class Graph {
 private:
-    vector<Vertex> verticesList;
-    vector<Edge> edgesList;
-    map<string, vector<string>> adjList;
+    std::vector<Vertex> verticesList;
+    std::vector<Edge> edgesList;
+    std::map<std::string, std::vector<std::string>> adjList;
 
-    void buildFromFile(string filename);
+    void buildFromFile(std::string filename);
 
 public:
     Graph();
-    Graph(string filename);
+    Graph(std::string filename);
 
-    bool hasVertex(string name) const; //check for a vertex w/ the name
-    bool hasEdge(string a, string b) const; //check for an edge connecting values 
-    Edge* findEdge(string a, string b); //find edge connecting values
-    const Edge* findEdge(string a, string b) const;
+    bool hasVertex(std::string name) const; //check for a vertex w/ the name
+    bool hasEdge(std::string a, std::string b) const; //check for an edge connecting values 
+    Edge* findEdge(std::string a, std::string b); //find edge connecting values
+    const Edge* findEdge(std::string a, std::string b) const;
 
-    vector<Vertex> vertices() const;
-    vector<Edge> edges() const;
+    std::vector<Vertex> vertices() const;
+    std::vector<Edge> edges() const;
 
-    void insertVertex(string name);
-    void insertEdge(string v, string w, string label);
+    void insertVertex(std::string name);
+    void insertEdge(std::string v, std::string w, std::string label);
 
-    void eraseVertex(string v);
-    void eraseEdge(string v, string w);
+    void eraseVertex(std::string v);
+    void eraseEdge(std::string v, std::string w);
 
-    void printIncidentEdges(string v) const;
-    vector<string> findPath(string start, string end);
+    void printIncidentEdges(std::string v) const;
+    std::vector<std::string> findPath(std::string start, std::string end);
 
     void printGraph() const;
 };

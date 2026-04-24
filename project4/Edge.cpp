@@ -1,4 +1,5 @@
 #include "Edge.h"
+#include <string>
 using namespace std;
 
 //constructors

@@ -3,6 +3,7 @@
 
 #include <string>
 
+class Edge;
 class Vertex {
 private:
     std::string name; //data in the vertex
