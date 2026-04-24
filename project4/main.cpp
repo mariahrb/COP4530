@@ -1,5 +1,7 @@
 #include "Graph.h"
 #include <iostream>
+#include <vector>
+#include <string>
 
 using namespace std;
 
@@ -42,14 +44,13 @@ int main() {
 
             vector<string> path = g.findPath(v, u);
 
-            for (std::size_t i = 0; i < path.size(); i++) { {
+            for (std::size_t i = 0; i < path.size(); i++) {
                 cout << path[i];
                 if (i != path.size() - 1) {
                     cout << " to ";
                 }
             }
             cout << endl;
-            }
         }
 
         else if (choice == 3) {
