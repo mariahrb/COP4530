@@ -39,3 +39,14 @@
 
 # debug information files
 *.dwo
+
+# IDE and editor directories
+.vscode/
+.claude/
+
+# macOS
+.DS_Store
+
+# Compiled binaries and program output
+project3/decision_tree
+project3/about_tree.txt
