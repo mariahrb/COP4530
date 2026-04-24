@@ -20,11 +20,11 @@ int main() {
         cout << "------------" << endl;
         cout << "What would you like to do?" << endl;
         cout << "------------" << endl;
-        cout << "1. Find edges incident on a vertex" << endl;
-        cout << "2. Find a path in the graph" << endl;
-        cout << "3. Insert an edge" << endl;
-        cout << "4. Erase a vertex" << endl;
-        cout << "0. Exit" << endl;
+        cout << "1) Find edges incident on a vertex" << endl;
+        cout << "2) Find a path in the graph" << endl;
+        cout << "3) Insert an edge" << endl;
+        cout << "4) Erase a vertex" << endl;
+        cout << "5) Exit" << endl;
 
         cin >> choice;
 
@@ -42,7 +42,7 @@ int main() {
 
             vector<string> path = g.findPath(v, u);
 
-            for (size_t i = 0; i < path.size(); i++) { {
+            for (std::size_t i = 0; i < path.size(); i++) { {
                 cout << path[i];
                 if (i != path.size() - 1) {
                     cout << " to ";
@@ -51,7 +51,7 @@ int main() {
             cout << endl;
             }
         }
-        
+
         else if (choice == 3) {
             string v, u, label;
             cout << "Enter v, u, and label: ";
