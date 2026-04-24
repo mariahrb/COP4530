@@ -24,7 +24,7 @@ int main() {
         cout << "2) Find a path in the graph" << endl;
         cout << "3) Insert an edge" << endl;
         cout << "4) Erase a vertex" << endl;
-        cout << "5) Exit" << endl;
+        cout << "0) Exit" << endl;
 
         cin >> choice;
 
