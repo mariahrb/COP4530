@@ -2,6 +2,7 @@
 #define EDGE_H
 
 #include <string>
+#include <utility>
 
 class Vertex;
 
@@ -19,12 +20,13 @@ public:
     std::string getV2() const;
     std::string getLabel() const;
 
-    std::string operator*() const; //returns main stored value
+    std::string operator*() const;
+    std::pair<std::string, std::string> endVertices() const; // returns both endpoint names
 
-    bool isIncidentOn(std::string v) const; //check if vertex is an endpoint
-    std::string opposite(std::string v) const; //returns opposite vertex
-    bool connects(std::string a, std::string b) const; //checks connections
-    bool isAdjacentTo(const Edge& e) const; //checks if vertex share endpoint
+    bool isIncidentOn(std::string v) const;
+    std::string opposite(std::string v) const;
+    bool connects(std::string a, std::string b) const;
+    bool isAdjacentTo(const Edge& e) const;
 };
 
 #endif

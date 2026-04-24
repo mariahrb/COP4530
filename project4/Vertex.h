@@ -2,19 +2,26 @@
 #define VERTEX_H
 
 #include <string>
+#include <vector>
 
 class Edge;
 class Vertex {
 private:
-    std::string name; //data in the vertex
+    std::string name;
+    std::vector<std::string> neighbors; // adjacent vertex names
 
 public:
-    Vertex();                  // constructor
-    Vertex(std::string n);          // constructor w/ name
+    Vertex();
+    Vertex(std::string n);
 
     std::string getName() const;
+    std::string operator*() const;
 
-    std::string operator*() const;  // returns name
+    void addNeighbor(std::string n);
+    void removeNeighbor(std::string n);
+
+    std::vector<std::string> incidentEdges() const; // returns adjacent vertex names
+    bool isAdjacentTo(std::string v) const;
 };
 
 #endif
